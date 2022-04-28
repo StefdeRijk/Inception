@@ -5,6 +5,10 @@ services:
     restart: always
     volumes:
       - "/wp"
+    networks:
+      - nginxwordpress
+    ports:
+      - "433:433"
   wordpress:
     container_name: wordpress
     build: requirements/wordpress/
@@ -14,3 +18,15 @@ services:
     networks:
       - nginxwordpress
       - wordpressmariadb
+  mariadb:
+    container_name: mariadb
+    build: requirements/mariadb
+    restart: always
+    volumes:
+      - "/wp"
+    networks:
+      - wordpressmariadb
+
+networks:
+  nginxwordpress:
+  wordpressmariadb:
