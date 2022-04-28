@@ -4,7 +4,7 @@ services:
     build: requirements/nginx/
     restart: always
     volumes:
-      - "/wp"
+      - "~/Databases/WP_website_files:/var/www/html"
     networks:
       - nginxwordpress
     ports:
@@ -14,7 +14,7 @@ services:
     build: requirements/wordpress/
     restart: always
     volumes:
-      - "/wp"
+      - "~/Databases/WP_website_files:/var/www/html"
     networks:
       - nginxwordpress
       - wordpressmariadb
@@ -23,7 +23,7 @@ services:
     build: requirements/mariadb
     restart: always
     volumes:
-      - "/wp"
+      - "~/Databases/WP_database:/var/lib/mysql"
     networks:
       - wordpressmariadb
 
