@@ -1,0 +1,16 @@
+services:
+  nginx:
+    container_name: nginx
+    build: requirements/nginx/
+    restart: always
+    volumes:
+      - "/wp"
+  wordpress:
+    container_name: wordpress
+    build: requirements/wordpress/
+    restart: always
+    volumes:
+      - "/wp"
+    networks:
+      - nginxwordpress
+      - wordpressmariadb
