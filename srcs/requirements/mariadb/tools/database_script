@@ -1,0 +1,23 @@
+#!/bin/sh
+set -x
+
+mysql_install_db
+
+service mysql stop
+mkdir -p /run/mysqld
+chown -R mysql:mysql /run/mysqld
+
+cat << END > /tmp/database_script.sql
+CREATE DATABASE IF NOT EXISTS WP;
+CREATE USER IF NOT EXISTS '$WP_USER_LOGIN'@'%' IDENTIFIED BY '$WP_USER_PASSWORD';
+CREATE USER IF NOT EXISTS '$WP_BOSS_LOGIN'@'%' IDENTIFIED BY '$WP_BOSS_PASSWORD';
+--GRANT ALL PRIVILEGES ON *.* TO '$WP_USER_LOGIN'@'%' WITH GRANT OPTION; --probably don't want to give this one all privileges
+GRANT ALL PRIVILEGES ON *.* TO '$WP_BOSS_LOGIN'@'%' WITH GRANT OPTION;
+FLUSH PRIVILEGES;
+END
+
+cat /tmp/database_script.sql
+
+service mysql start && mysql < /tmp/database_script.sql
+service mysql stop
+mysqld

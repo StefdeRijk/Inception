@@ -1,40 +1,58 @@
+volumes:
+  wp:
+    driver: local
+    name: wp
+    driver_opts:
+      type: none
+      o: bind
+      device: /home/inception/data/wp
+  db:
+    driver: local
+    name: db
+    driver_opts:
+      type: none
+      o: bind
+      device: /home/inception/data/db
 services:
   nginx:
     container_name: nginx
     build: requirements/nginx/
     restart: always
     volumes:
-      - "~/Databases/WP_website_files:/var/www/html"
+      - "~/data/wp:/var/www/html"
     networks:
       - nginxwordpress
     ports:
-      - "433:433"
+      - "443:443"
     depends_on:
       - wordpress
-
   wordpress:
+    env_file:
+      - .env
     container_name: wordpress
     build: requirements/wordpress/
     restart: always
     volumes:
-      - "~/Databases/WP_website_files:/var/www/html"
-    ports:
-      - "9000:9000"
+      - "~/data/wp:/var/www/html"
     networks:
       - nginxwordpress
       - wordpressmariadb
-
+    ports:
+      - "9000:9000"
+    depends_on:
+      - mariadb
   mariadb:
+    env_file:
+      - .env
     container_name: mariadb
-    build: requirements/mariadb
+    build: requirements/mariadb/
     restart: always
     volumes:
-      - "~/Databases/WP_database:/var/lib/mysql"
-    ports:
-      - "3306:3306"
+      - "~/data/db:/var/lib/mysql"
     networks:
       - wordpressmariadb
-
+    ports:
+      - "3306:3306"
 networks:
   nginxwordpress:
   wordpressmariadb:
