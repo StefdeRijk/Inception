@@ -1,0 +1,19 @@
+Docker vs Docker-compose:
+	Docker is used to manage individual containers while docker-compose can manage multiple containers. A container uses the host OS to run apps while a VM simulates a separate OS.
+
+Docker image with and without Docker-compose:
+	A docker image is like a snapshot in a VM, it is a record of a container at a specific point in time. Docker-compose prefixes the image name with the project name. 
+
+Docker vs VM:
+	Docker is much more lightweight than a VM so you don't need as much space to run docker as you would a VM. This also means that running a docker container is faster than running a VM. Furthermore, docker containers are much more portable than a VM, since they use the host OS to launch apps you can run them on any OS immediately. 
+
+Pertinence of the directory structure:
+	Subject requires it. 
+
+Docker network:
+	Docker networks is a way for the containers of communicating with eachother. 	
+
+Logging into the database:
+
+
+

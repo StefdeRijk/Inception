@@ -11,8 +11,9 @@ kill:
 	docker-compose -f srcs/docker-compose.yml kill
 
 rmv:
-	rm -rf ~/data/db
-	rm -rf ~/data/wp
+	docker volume rm $$(docker volume ls -q) || true
+	rm -rf /home/inception/data/wp/*
+	rm -rf /home/inception/data/db/*
 
 purge:
 	yes | docker system prune -a 
