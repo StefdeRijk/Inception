@@ -7,17 +7,19 @@ service mysql stop
 mkdir -p /run/mysqld
 chown -R mysql:mysql /run/mysqld
 
-cat << END > /tmp/database_script.sql
+cat << END > /tmp/wpdbscript.sql
+--this site: https://www.linode.com/docs/guides/how-to-install-wordpress-using-wp-cli-on-debian-10/ also covers this part
 CREATE DATABASE IF NOT EXISTS WP;
 CREATE USER IF NOT EXISTS '$WP_USER_LOGIN'@'%' IDENTIFIED BY '$WP_USER_PASSWORD';
 CREATE USER IF NOT EXISTS '$WP_BOSS_LOGIN'@'%' IDENTIFIED BY '$WP_BOSS_PASSWORD';
---GRANT ALL PRIVILEGES ON *.* TO '$WP_USER_LOGIN'@'%' WITH GRANT OPTION;
+--https://stackoverflow.com/questions/1559955/host-xxx-xx-xxx-xxx-is-not-allowed-to-connect-to-this-mysql-server
+--GRANT ALL PRIVILEGES ON *.* TO '$WP_USER_LOGIN'@'%' WITH GRANT OPTION; --probably don't want to give this one all privileges
 GRANT ALL PRIVILEGES ON *.* TO '$WP_BOSS_LOGIN'@'%' WITH GRANT OPTION;
 DELETE FROM mysql.user WHERE User='root';
 FLUSH PRIVILEGES;
 END
 
-service mysql start && mysql < /tmp/database_script.sql
+service mysql start && mysql < /tmp/wpdbscript.sql
 mysqladmin -u$WP_BOSS_LOGIN -p$WP_BOSS_PASSWORD shutdown
-rm -f /tmp/database_script.sql
+rm -f /tmp/wpdbscript.sql
 mysqld

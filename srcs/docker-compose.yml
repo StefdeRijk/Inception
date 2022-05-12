@@ -1,25 +1,24 @@
 volumes:
   wp:
-    driver: local
     name: wp
     driver_opts:
       type: none
       o: bind
-      device: /home/inception/data/wp
+      device: /home/sde-rijk/data/wp
   db:
-    driver: local
     name: db
     driver_opts:
       type: none
       o: bind
-      device: /home/inception/data/db
+      device: /home/sde-rijk/data/db
 services:
   nginx:
+    image: nginx
     container_name: nginx
     build: requirements/nginx/
     restart: always
     volumes:
-      - "~/data/wp:/var/www/html"
+      - wp:/var/www/html
     networks:
       - nginxwordpress
     ports:
@@ -29,30 +28,32 @@ services:
   wordpress:
     env_file:
       - .env
+    image: wordpress
     container_name: wordpress
     build: requirements/wordpress/
     restart: always
     volumes:
-      - "~/data/wp:/var/www/html"
+      - wp:/var/www/html
     networks:
       - nginxwordpress
       - wordpressmariadb
-    ports:
-      - "9000:9000"
+        #ports:
+        #- "9000:9000"
     depends_on:
       - mariadb
   mariadb:
     env_file:
       - .env
+    image: mariadb
     container_name: mariadb
     build: requirements/mariadb/
     restart: always
     volumes:
-      - "~/data/db:/var/lib/mysql"
+      - db:/var/lib/mysql
     networks:
       - wordpressmariadb
-    ports:
-      - "3306:3306"
+        #ports:
+        #- "3306:3306"
 networks:
   nginxwordpress:
   wordpressmariadb:
