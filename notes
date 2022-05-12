@@ -20,8 +20,12 @@ NGINX connect only through port 443, not port 80:
 
 Logging into the database:
 	get container id:
-		docker ps -a | grep Up | grep container_name | awk '{print $1}'
+		docker ps -a | grep Up | grep wordpress | awk '{print $1}'
 	go into running container:
 		docker exec -it container_id bash
 	login to the database:
 		mariadb -hmariadb -ulogin_name -plogin_password
+	inside the database:
+		show databases;
+		use WP;
+		select * from wp_comments;
