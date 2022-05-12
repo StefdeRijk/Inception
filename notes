@@ -13,7 +13,15 @@ Pertinence of the directory structure:
 Docker network:
 	Docker networks is a way for the containers of communicating with eachother. 	
 
+NGINX connect only through port 443, not port 80:
+	Change settings to false in firefox otherwise firefox automatically redirects to https.
+	network.stricttransportsecurity.preloadlist
+	browser.fixup.fallback-to-https
+
 Logging into the database:
-
-
-
+	get container id:
+		docker ps -a | grep Up | grep container_name | awk '{print $1}'
+	go into running container:
+		docker exec -it container_id bash
+	login to the database:
+		mariadb -hmariadb -ulogin_name -plogin_password
